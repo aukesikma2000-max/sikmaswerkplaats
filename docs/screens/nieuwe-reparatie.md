@@ -170,11 +170,11 @@ Verplicht:
 
 - Omschrijving
 - Naam
-- Woonplaats
 - Telefoonnummer
 
 Optioneel:
 
+- Woonplaats
 - E-mail
 
 ---
