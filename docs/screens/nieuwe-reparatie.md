@@ -50,7 +50,9 @@ Verplicht
 
 Woonplaats
 
-Verplicht
+Optioneel.
+
+Wordt gebruikt om klanten sneller te herkennen wanneer meerdere klanten dezelfde of een vergelijkbare naam hebben.
 
 ---
 
