@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  @apply min-h-screen bg-[#F8F8F8] text-[#111111] antialiased;
+}
+
+* {
+  @apply box-border;
+}
