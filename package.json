@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:smoke": "tsx scripts/validate-print-dispatch.ts"
+    "test:smoke": "tsx scripts/validate-print-dispatch.ts",
+    "ship": "bash ./scripts/ship.sh"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",
