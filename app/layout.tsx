@@ -6,11 +6,15 @@ export const metadata: Metadata = {
   description: 'Professionele UI voor reparaties en ophalen van naaimachines',
   icons: {
     icon: [
+      { url: '/sneltoetsicoon.png', type: 'image/png' },
       { url: '/icon.png', type: 'image/png' },
       { url: '/logo.png', type: 'image/png' },
     ],
-    apple: [{ url: '/apple-icon.png', type: 'image/png' }],
-    shortcut: ['/icon.png'],
+    apple: [
+      { url: '/sneltoetsicoon.png', type: 'image/png' },
+      { url: '/apple-icon.png', type: 'image/png' },
+    ],
+    shortcut: ['/sneltoetsicoon.png', '/icon.png'],
   },
 };
 
