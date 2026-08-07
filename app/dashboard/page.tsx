@@ -260,15 +260,12 @@ export default function DashboardPage() {
           {canCreateRepair ? (
             <Link href="/nieuwe-reparatie" className="block">
               <Card className="h-full min-h-[190px] bg-gradient-to-r from-[#D4AF37] to-[#D19F00] p-7 text-white transition hover:shadow-[0_16px_36px_rgba(17,17,17,0.12)]">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-5xl font-light text-[#D19F00]">+</div>
-                    <div>
-                      <h2 className="text-3xl font-semibold">Nieuwe reparatie</h2>
-                      <p className="mt-1 text-base text-white/90">Meld een nieuwe machine aan</p>
-                    </div>
+                <div className="flex h-full flex-col items-center justify-center gap-3 text-center">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-5xl font-light text-[#D19F00]">+</div>
+                  <div>
+                    <h2 className="text-3xl font-semibold">Nieuwe reparatie</h2>
+                    <p className="mt-1 text-base text-white/90">Meld een nieuwe machine aan</p>
                   </div>
-                  <span className="text-4xl leading-none text-white/90">›</span>
                 </div>
               </Card>
             </Link>
@@ -277,15 +274,12 @@ export default function DashboardPage() {
           {canManagePickup ? (
             <Link href="/machine-ophalen" className="block">
               <Card className="h-full min-h-[190px] bg-gradient-to-r from-emerald-700 to-emerald-600 p-7 text-white transition hover:shadow-[0_16px_36px_rgba(17,17,17,0.12)]">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-4xl">📦</div>
-                    <div>
-                      <h2 className="text-3xl font-semibold">Machine afgeven</h2>
-                      <p className="mt-1 text-base text-white/90">{ready.length} machine{ready.length !== 1 ? 's' : ''} klaar</p>
-                    </div>
+                <div className="flex h-full flex-col items-center justify-center gap-3 text-center">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-4xl">📦</div>
+                  <div>
+                    <h2 className="text-3xl font-semibold">Machine afgeven</h2>
+                    <p className="mt-1 text-base text-white/90">{ready.length} machine{ready.length !== 1 ? 's' : ''} klaar</p>
                   </div>
-                  <span className="text-4xl leading-none text-white/90">›</span>
                 </div>
               </Card>
             </Link>
@@ -388,34 +382,35 @@ export default function DashboardPage() {
                 <div
                   key={repair.id}
                   className="cursor-pointer border-b border-slate-100 px-5 py-4 transition hover:bg-slate-50"
-                  onClick={() => router.push(`/machine-ophalen?repair=${encodeURIComponent(repair.id)}`)}
+                  onClick={() => router.push(`/reparaties/${encodeURIComponent(repair.id)}`)}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault();
-                      router.push(`/machine-ophalen?repair=${encodeURIComponent(repair.id)}`);
+                      router.push(`/reparaties/${encodeURIComponent(repair.id)}`);
                     }
                   }}
                 >
-                <div className="grid gap-4 xl:grid-cols-[1fr_1.5fr_1.4fr_0.9fr_auto_auto] xl:items-center">
-                  <div>
+                <div className="grid gap-4 xl:grid-cols-[1fr_1.6fr_1.4fr_0.9fr_auto_auto] xl:items-start">
+                  <div className="min-h-[56px]">
                     <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Reparatienummer</p>
                     <p className="mt-1 text-sm font-semibold text-[#111111]">{getDisplayRepairNumber(repair)}</p>
                   </div>
 
-                  <div>
+                  <div className="min-h-[56px]">
                     <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Klant</p>
                     <p className="mt-1 text-sm font-semibold text-[#111111]">{repair.customer}</p>
-                    <p className="text-sm text-slate-600">{repair.city || '-'}</p>
+                    <p className="text-sm text-slate-600">{repair.city || '\u00A0'}</p>
                   </div>
 
-                  <div>
+                  <div className="min-h-[56px]">
                     <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Machine</p>
                     <p className="mt-1 text-sm font-semibold text-[#111111]">{getMachineLine(repair)}</p>
+                    <p className="text-sm text-slate-600">\u00A0</p>
                   </div>
 
-                  <div>
+                  <div className="min-h-[56px]">
                     <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Communicatie</p>
                     <div className="mt-1 flex items-center gap-2">
                       {COMMUNICATION_CHANNELS.map((channel) => {
@@ -446,18 +441,22 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center">
-                    <StatusBadge status="READY" />
+                  <div className="min-h-[56px]">
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Status</p>
+                    <div className="mt-1 flex items-center">
+                      <StatusBadge status="READY" />
+                    </div>
                   </div>
 
-                  <div>
-                    {repair.price > 0 ? <p className="mb-2 text-sm font-semibold text-[#111111]">€ {repair.price.toFixed(2)}</p> : null}
+                  <div className="min-h-[56px]">
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Actie</p>
+                    {repair.price > 0 ? <p className="mb-2 mt-1 text-sm font-semibold text-[#111111]">€ {repair.price.toFixed(2)}</p> : <p className="mb-2 mt-1 text-sm text-slate-500">\u00A0</p>}
                     <Link
-                      href={`/machine-ophalen?repair=${encodeURIComponent(repair.id)}`}
+                      href={`/reparaties/${encodeURIComponent(repair.id)}`}
                       onClick={(event) => event.stopPropagation()}
                       className="inline-flex items-center rounded-[12px] border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-[#111111] transition hover:border-[#D4AF37]"
                     >
-                      Machine afgeven →
+                      Dossier openen →
                     </Link>
                   </div>
                 </div>
