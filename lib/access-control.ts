@@ -42,7 +42,6 @@ const ROLE_PERMISSIONS: Record<WorkshopUserRole, AppPermission[]> = {
     'pickup.manage',
     'onlineSubmissions.view',
     'customers.view',
-    'archive.view',
   ],
 };
 

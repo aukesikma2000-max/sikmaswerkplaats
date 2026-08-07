@@ -36,7 +36,6 @@ const NAV_LINKS: Record<string, { href: string; label: string }[]> = {
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/online-aanmeldingen', label: 'Online' },
     { href: '/klanten', label: 'Klanten' },
-    { href: '/archief', label: 'Archief' },
   ],
 };
 
