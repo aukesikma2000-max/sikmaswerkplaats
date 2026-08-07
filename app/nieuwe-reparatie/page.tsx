@@ -10,9 +10,11 @@ import { getActorHeaders } from '@/lib/client/request-actor';
 import { addRepair, loadCustomers } from '@/lib/repair-service';
 import type { Customer } from '@/types/repair';
 import { detectPossibleDuplicateIntake } from '@/lib/repair-intake-dedupe';
+import { hasSupabaseConfig } from '@/lib/supabase-config';
 
 export default function NieuweReparatiePage() {
   const router = useRouter();
+  const hasConfig = hasSupabaseConfig();
   const [description, setDescription] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
@@ -52,6 +54,13 @@ export default function NieuweReparatiePage() {
   }, []);
 
   useEffect(() => {
+    if (!hasConfig) {
+      setSaveError(
+        'Supabase is niet geconfigureerd voor deze omgeving. Zet NEXT_PUBLIC_SUPABASE_URL en NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (of NEXT_PUBLIC_SUPABASE_ANON_KEY) en herstart/deploy.',
+      );
+      return;
+    }
+
     let mounted = true;
     async function load() {
       try {
@@ -66,7 +75,7 @@ export default function NieuweReparatiePage() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [hasConfig]);
 
   const customerSuggestions = useMemo(() => {
     const query = name.trim().toLowerCase();
@@ -148,6 +157,13 @@ export default function NieuweReparatiePage() {
     if (isSaving) return;
     setSaveError('');
 
+    if (!hasConfig) {
+      setSaveError(
+        'Opslaan is geblokkeerd: Supabase omgeving ontbreekt. Controleer NEXT_PUBLIC_SUPABASE_URL en NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (of NEXT_PUBLIC_SUPABASE_ANON_KEY).',
+      );
+      return;
+    }
+
     const trimmedName = name.trim();
     const trimmedMobile = mobilePhone.trim();
     const trimmedLandline = landlinePhone.trim();
@@ -227,6 +243,10 @@ export default function NieuweReparatiePage() {
       router.push(`/nieuwe-reparatie/succes?${nextParams.toString()}`);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Opslaan is mislukt. Controleer de verbinding en probeer opnieuw.';
+      if (message.toLowerCase().includes('supabase') && message.toLowerCase().includes('configuratie')) {
+        setSaveError(`${message} In Vercel: Project Settings > Environment Variables > voeg de NEXT_PUBLIC variabelen toe en redeploy.`);
+        return;
+      }
       setSaveError(message);
     } finally {
       setIsSaving(false);
@@ -331,7 +351,7 @@ export default function NieuweReparatiePage() {
 
           <div className="mt-6">
             {saveError ? <p className="mb-3 rounded-[12px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{saveError}</p> : null}
-            <Button onClick={handleSave} disabled={isSaving}>
+            <Button onClick={handleSave} disabled={isSaving || !hasConfig}>
               {isSaving ? 'Opslaan en sticker afdrukken...' : 'OPSLAAN'}
             </Button>
           </div>
